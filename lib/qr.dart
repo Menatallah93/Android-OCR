@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:androidocr/constant.dart';
 import 'package:flutter/material.dart';
+import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:multi_select_flutter/chip_display/multi_select_chip_display.dart';
 import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';
@@ -31,7 +32,7 @@ class _convertQRToState extends State<convertQRTo> {
 
  // Barcode? barcode;
  // QRViewController? controller;
-
+  final _QrTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -90,13 +91,38 @@ class _convertQRToState extends State<convertQRTo> {
                 ),
                 ElevatedButton(
                   onPressed: () async{
-                      //buildQrView(context);
-                     // Positioned(bottom: 10 , child: buildResult());
+
+                    final barcodeScanner = GoogleMlKit.vision.barcodeScanner();
+                    var image = InputImage.fromFile(widget.imageFile);
+                    final List<Barcode> barcodes = await barcodeScanner.processImage(image);
+
+                    for (Barcode barcode in barcodes) {
+                      final BarcodeType type = barcode.type;
 
 
-                   /* _pickedImage = imageFile;
+                      // See API reference for complete list of supported types
+                      switch (type) {
+                        case BarcodeType.wifi:
+                          BarcodeValue barcodeWifi = barcode.value;
+                          _QrTextController.text = barcodeWifi.displayValue??"";
+                          break;
+                        case BarcodeType.url:
+                          BarcodeValue barcodeUrl = barcode.value;
+                          _QrTextController.text = barcodeUrl.displayValue??"";
+                          break;
+                        default:
+                          BarcodeValue barcodeDefault = barcode.value;
+                          _QrTextController.text = barcodeDefault.displayValue??"";
+                      }
+                    }
+                    print(_QrTextController.text);
+
+
+
+
+                   /*
                     _extractText =
-                    await FlutterTesseractOcr.extractText(_pickedImage.path);*/
+                      await FlutterTesseractOcr.extractText(_pickedImage.path);*/
                   },
                   child: Text('Get Qr code'),
                 ),
@@ -115,7 +141,7 @@ class _convertQRToState extends State<convertQRTo> {
 
                     // بدايه الانبوت
                       child: TextFormField(
-                       // barcode != null ? 'Result : ${barcode!.code}': 'Scan the Code',
+                        controller: _QrTextController,
                         maxLines: 4,
                         onTap: () {
                           print('g');
@@ -123,14 +149,19 @@ class _convertQRToState extends State<convertQRTo> {
                         // textAlign: TextAlign.,
                         cursorColor: Colors.black,
                         showCursor: true,
-                        decoration: new InputDecoration(
+                        decoration: InputDecoration(
                           border: InputBorder.none,
                           focusedBorder: InputBorder.none,
                           enabledBorder: InputBorder.none,
-                          suffixIcon:  Icon(Icons.headset , color: Colors.black,size: 30,),
-
+                          // suffixIcon: IconButton(
+                          //   onPressed: () => _speak(),
+                          //   icon: Icon(
+                          //     Icons.headset,
+                          //     color: Colors.black,
+                          //     size: 30,
+                          //   ),
+                          // ),
                         ),
-
                       ),
                     ),
                   ),
