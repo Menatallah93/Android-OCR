@@ -47,6 +47,10 @@ class _convertImageToState extends State<convertImageTo> {
       {"text": 'Arabic', "abbr": "ar"},
       {"text": 'French', "abbr": "fr"},
       {"text": 'English', "abbr": "en"},
+      {"text": 'Spanish', "abbr": "es"},
+      {"text": 'Japanese', "abbr": "ja"},
+      {"text": 'Hindi', "abbr": "hi"},
+
     ]
         .map((lang) => MultiSelectItem<String>(lang["abbr"]!, lang["text"]!))
         .toList();
