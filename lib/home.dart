@@ -2,16 +2,15 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:androidocr/image_to_text.dart';
+
 //import 'package:androidocr/setting.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:easy_localization/src/public_ext.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as p;
-
-
-
 
 import 'QR.dart';
 import 'constant.dart';
@@ -19,19 +18,16 @@ import 'doc.dart';
 import 'math.dart';
 import 'math.dart';
 import 'traffic.dart';
-
+import 'sett.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
-
 
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-
-
   late File image;
   late int numPage;
   late String text;
@@ -141,11 +137,11 @@ class _HomePageState extends State<HomePage> {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
 
     if (result != null) {
-      String? file = result.files.single.path ;
+      String? file = result.files.single.path;
       String fileName = file!.split('/').last;
       String exten = p.extension(file);
       print("#################################3");
-      print(fileName);
+      print(file);
       new File(file)
           .openRead()
           .transform(utf8.decoder)
@@ -157,7 +153,9 @@ class _HomePageState extends State<HomePage> {
             text: text,
             imageIcon: imageIcon,
             colorBar: colorBar,
+            pathFile: file,
             nameFile: fileName,
+
             typeFile: exten,
           ));
     } else {
@@ -169,32 +167,28 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery
-        .of(context)
-        .size
-        .width;
-    var hight = MediaQuery
-        .of(context)
-        .size
-        .height;
-
+    var width = MediaQuery.of(context).size.width;
+    var hight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-
         appBar: AppBar(
           backgroundColor: kColorPrimary,
           leading: Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
-            child: Image.asset('assets/11.png',),
+            child: Image.asset(
+              'assets/11.png',
+            ),
           ),
-          title:
-          Row(
-
+          title: Row(
             children: [
-              Text('Pro',
-                style: TextStyle(color: Colors.white, fontSize: 25),),
-              Text('Scan',
-                style: TextStyle(color: Colors.red, fontSize: 25),),
+              Text(
+                'Pro',
+                style: TextStyle(color: Colors.white, fontSize: 25),
+              ),
+              Text(
+                'Scan',
+                style: TextStyle(color: Colors.red, fontSize: 25),
+              ),
             ],
           ),
           actions: [
@@ -202,93 +196,84 @@ class _HomePageState extends State<HomePage> {
               padding: const EdgeInsets.all(10.0),
               //child: Icon(Icons.settings),
 
-
-                child: ElevatedButton(
-
-                  child: const Icon(Icons.settings),
-
-                  onPressed: () =>null,
-                  style: ElevatedButton.styleFrom(
-                      primary: Color.fromARGB(255, 4, 0, 52),
-
+              child: ElevatedButton(
+                child: const Icon(Icons.settings),
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (BuildContext context) => SettingsScreen()));
+                },
+                style: ElevatedButton.styleFrom(
+                  primary: Color.fromARGB(255, 4, 0, 52),
                 ),
-                ),
-
-
-        /*child: ElevatedButton(onPressed: (){
-
-          AppSettings.openAppSettings();
-        }, child: Icon(Icons.settings))*/
-
-
-
-
+              ),
             ),
           ],
-
         ),
-        body:
-        SingleChildScrollView(
+        body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               CarouselSlider(
                 options: CarouselOptions(
                   height: hight * .38,
                   viewportFraction: 1.0,
                   enlargeCenterPage: false,
-                  // autoPlay: false,
                 ),
                 items: imgList
-                    .map((item) =>
-                    Container(
-                      child: Center(
-                          child: Image.asset(
+                    .map((item) => Container(
+                          child: Center(
+                              child: Image.asset(
                             item,
                             fit: BoxFit.cover,
                             height: hight * .38,
                           )),
-                    ))
+                        ))
                     .toList(),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 15, horizontal: 8),
-                child: Text('Services', style: TextStyle(
-                  fontSize: 25, fontWeight: FontWeight.bold,),),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+                child: Text(
+                  'services'.tr(),
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
               Center(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     buttonServices(
-
                       //icons
                       color: Color.fromARGB(255, 187, 222, 251),
                       //color: Color.fromRGBO( 187, 222, 251, 1) , opacity=1 for all colors
                       img: 'assets/ocr11.png',
-                      text: 'Image To Text',
+                      text: ('Image To Text'.tr()),
                       width: width * .9,
                       openDialog: dialog,
                       numPage: 1,
                       colorBar: Color.fromARGB(255, 187, 222, 251),
-
                     )
                   ],
                 ),
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               Center(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     buttonServices(
-
                       //color: Color.fromARGB(255, 255, 249, 196),
                       color: Color.fromARGB(255, 225, 232, 204),
                       img: 'assets/calculator.png',
-                      text: 'Mathematical Equation',
+                      text: ('Mathematical Equation'.tr()),
                       width: width * .9,
                       openDialog: dialog,
                       numPage: 2,
@@ -297,8 +282,9 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               Center(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -306,7 +292,7 @@ class _HomePageState extends State<HomePage> {
                     buttonServices(
                       color: Color.fromARGB(255, 178, 235, 242),
                       img: 'assets/qr.png',
-                      text: 'QR Code',
+                      text: ('QR Code'.tr()),
                       width: width * .9,
                       openDialog: dialog,
                       numPage: 3,
@@ -315,51 +301,45 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               Center(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     buttonServices(
-
                         color: Color.fromARGB(255, 197, 202, 233),
                         img: 'assets/sign.png',
-                        text: 'Traffic Sign ',
+                        text: ('Traffic Sign'.tr()),
                         width: width * .9,
                         openDialog: dialog,
                         numPage: 4,
-                        colorBar: Color.fromARGB(255, 197, 202, 233)
-
-                    )
+                        colorBar: Color.fromARGB(255, 197, 202, 233))
                   ],
                 ),
               ),
-
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               Center(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     buttonServices(
-
                         color: Color.fromARGB(255, 201, 231, 227),
                         img: 'assets/document.png',
-                        text: 'Document ',
+                        text: ('Document'.tr()),
                         width: width * .9,
                         openDialog: dialog,
                         numPage: 5,
-                        colorBar: Color.fromARGB(255, 201, 231, 227)
-
-                    )
+                        colorBar: Color.fromARGB(255, 201, 231, 227))
                   ],
                 ),
               ),
             ],
-
-
           ),
-        )
-    );
+        ));
   }
 
   dialog(int numPage, String text, String imageIcon, Color colorBar) {
@@ -367,35 +347,35 @@ class _HomePageState extends State<HomePage> {
     this.colorBar = colorBar;
     this.text = text;
     this.numPage = numPage;
-    numPage!=5 ? showModalBottomSheet(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topRight: Radius.circular(20),
-          topLeft: Radius.circular(20),
-        ),
-      ),
-      backgroundColor: Colors.white,
-      context: context,
-      builder: (context) => Wrap(children: [
-        ListTile(
-          leading: Icon(Icons.camera_alt),
-          title: Text('Camera'),
-          onTap: () async {
-            _openCamera(context);
-            //Navigator.pop(context);
-          },
-        ),
-        ListTile(
-          leading: Icon(Icons.photo_album),
-          title: Text('Gallery'),
-          onTap: () {
-            _openGallary(context);
-            //Navigator.pop(context);
-          },
-        ),
-      ]) ,
-    ) : _openFile(context);
+    numPage != 5
+        ? showModalBottomSheet(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(20),
+                topLeft: Radius.circular(20),
+              ),
+            ),
+            backgroundColor: Colors.white,
+            context: context,
+            builder: (context) => Wrap(children: [
+              ListTile(
+                leading: Icon(Icons.camera_alt),
+                title: Text('Camera').tr(),
+                onTap: () async {
+                  _openCamera(context);
+                  //Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.photo_album),
+                title: Text('Gallery').tr(),
+                onTap: () {
+                  _openGallary(context);
+                  //Navigator.pop(context);
+                },
+              ),
+            ]),
+          )
+        : _openFile(context);
   }
-
-
 }

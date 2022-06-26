@@ -8,18 +8,22 @@ import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';
 import 'package:translator/translator.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+//import 'package:math_expressions/math_expressions.dart';
+import 'package:easy_localization/src/public_ext.dart';
+
+
+
 
 class convertImageTo extends StatefulWidget {
   final File imageFile;
   final String text, imageIcon;
   final Color colorBar;
 
-  const convertImageTo(
-      {Key? key,
-      required this.imageFile,
-      required this.text,
-      required this.imageIcon,
-      required this.colorBar})
+  const convertImageTo({Key? key,
+    required this.imageFile,
+    required this.text,
+    required this.imageIcon,
+    required this.colorBar})
       : super(key: key);
 
   @override
@@ -41,8 +45,14 @@ class _convertImageToState extends State<convertImageTo> {
   Widget build(BuildContext context) {
     // final TextEditingController _controller = new TextEditingController();
 
-    var width = MediaQuery.of(context).size.width;
-    var hight = MediaQuery.of(context).size.height;
+    var width = MediaQuery
+        .of(context)
+        .size
+        .width;
+    var hight = MediaQuery
+        .of(context)
+        .size
+        .height;
     var _languages = [
       {"text": 'Arabic', "abbr": "ar"},
       {"text": 'French', "abbr": "fr"},
@@ -50,13 +60,23 @@ class _convertImageToState extends State<convertImageTo> {
       {"text": 'Spanish', "abbr": "es"},
       {"text": 'Japanese', "abbr": "ja"},
       {"text": 'Hindi', "abbr": "hi"},
-
     ]
         .map((lang) => MultiSelectItem<String>(lang["abbr"]!, lang["text"]!))
         .toList();
 
     Future _speak() async {
       await flutterTts.setLanguage("en-US");
+      await flutterTts.setPitch(1);
+      await flutterTts.speak(_extractText);
+    }
+
+    Future _speakMultipleLang() async {
+      //await flutterTts.setLanguage("ar-XA");
+      await flutterTts.setLanguage("fr-CA");
+      //await flutterTts.setLanguage("en-US");
+      await flutterTts.setLanguage("es-ES");
+      await flutterTts.setLanguage("ja-JP");
+      //await flutterTts.setLanguage("hi-IN");
       await flutterTts.setPitch(1);
       await flutterTts.speak(_extractText);
     }
@@ -77,13 +97,7 @@ class _convertImageToState extends State<convertImageTo> {
             style: TextStyle(color: Colors.black, fontSize: 25),
           ),
           actions: [
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Icon(
-                Icons.settings,
-                color: Colors.black,
-              ),
-            ),
+
           ],
         ),
         body: SingleChildScrollView(
@@ -98,9 +112,10 @@ class _convertImageToState extends State<convertImageTo> {
                 ),
                 Center(
                     child: Image.file(
-                  widget.imageFile,
-                  width: width * 0.6,
-                )),
+                      widget.imageFile,
+                      width: width * 0.6,
+                    )
+                ),
                 SizedBox(
                   height: 10,
                 ),
@@ -110,27 +125,16 @@ class _convertImageToState extends State<convertImageTo> {
                       flag = true;
                     });
                     String path = widget.imageFile.path
-                        .toString(); //Image.file(widget.imageFile).image.toString();
+                        .toString();
+                    //Image.file(widget.imageFile).image.toString();
 
                     final inputImage = InputImage.fromFile(widget.imageFile);
                     final textDetector = GoogleMlKit.vision.textDetector();
                     final RecognisedText recognisedText =
-                        await textDetector.processImage(inputImage);
+                    await textDetector.processImage(inputImage);
                     String text = recognisedText.text;
 
-                    // for (TextBlock block in recognisedText.blocks) {
-                    //   final Rect rect = block.rect;
-                    //   final List<Offset> cornerPoints = block.cornerPoints;
-                    //   final String text = block.text;
-                    //   final List<String> languages = block.recognizedLanguages;
-                    //
-                    //   for (TextLine line in block.lines) {
-                    //     // Same getters as TextBlock
-                    //     for (TextElement element in line.elements) {
-                    //       // Same getters as TextBlock
-                    //     }
-                    //   }
-                    // }
+
                     textDetector.close();
                     print(text);
                     _extractText = text;
@@ -139,54 +143,54 @@ class _convertImageToState extends State<convertImageTo> {
                       flag = false;
                     });
                   },
-                  child: Text('Convert To Text'),
+                  child: Text('Convert To Text'.tr()),
                 ),
                 SizedBox(height: 20),
                 flag
                     ? Center(child: CircularProgressIndicator())
-                    // : Center(
-                    //   child: Text(
-                    //     _extractText,
-                    //     style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold,),
-                    //   ),
-                    // ),
+                // : Center(
+                //   child: Text(
+                //     _extractText,
+                //     style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold,),
+                //   ),
+                // ),
 
                     : Material(
-                        elevation: 3.0,
-                        shadowColor: Colors.grey,
-                        borderRadius: BorderRadius.circular(15),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(15.0),
-                          child: Container(
-                            child: TextFormField(
-                              // controller: _ocrTextController,
-                              maxLines: 4,
-                              cursorColor: Colors.black,
-                              showCursor: true,
-                              //_extractText,
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                focusedBorder: InputBorder.none,
-                                enabledBorder: InputBorder.none,
-                                contentPadding:
-                                    EdgeInsets.fromLTRB(20, 5, 5, 5),
-                                suffixIcon: IconButton(
-                                  onPressed: () => _speak(),
-                                  icon: Icon(
-                                    Icons.headset,
-                                    color: Colors.black,
-                                    size: 30,
-                                  ),
-                                ),
-                                // child: RaisedButton(
-                                //   child: Icon(Icons.headset, color: Colors.black, size: 30,),
-                                //     onPressed: () => _speak(),
-                                // ),
-                              ),
-                              initialValue: _extractText,
+                  elevation: 3.0,
+                  shadowColor: Colors.grey,
+                  borderRadius: BorderRadius.circular(15),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(15.0),
+                    child: Container(
+                      child: TextFormField(
+                        // controller: _ocrTextController,
+                        maxLines: 4,
+                        cursorColor: Colors.black,
+                        showCursor: true,
+                        //_extractText,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          contentPadding:
+                          EdgeInsets.fromLTRB(20, 5, 5, 5),
+                          suffixIcon: IconButton(
+                            onPressed: () => _speak(),
+                            icon: Icon(
+                              Icons.headset,
+                              color: Colors.black,
+                              size: 30,
                             ),
+                          ),
+                          // child: RaisedButton(
+                          //   child: Icon(Icons.headset, color: Colors.black, size: 30,),
+                          //     onPressed: () => _speak(),
+                          // ),
+                        ),
+                        initialValue: _extractText,
+                      ),
 
-                            /*child: Center(
+                      /*child: Center(
                           child: Text(
                             _extractText,
                             textAlign: TextAlign.center,
@@ -196,15 +200,15 @@ class _convertImageToState extends State<convertImageTo> {
                             ),
                           ),
                         ),*/
-                          ),
-                        ),
-                      ),
+                    ),
+                  ),
+                ),
                 SizedBox(
                   height: 10,
                 ),
                 Row(
                   children: [
-                    Expanded(flex: 2, child: Text("Translate")),
+                    Expanded(flex: 2, child: Text("Translate".tr())),
                     //SizedBox(width:  width*0.1,),
                     Expanded(
                       flex: 3,
@@ -224,54 +228,25 @@ class _convertImageToState extends State<convertImageTo> {
                                           color: Colors.white, fontSize: 14),
                                     ),
                                     //decoration: BoxDecoration(),
-                                    title: Text("Language"),
+                                    title: Text("Language".tr()),
 
 
                                     selectedColor: Colors.black,
                                     onConfirm: (value) async {
                                       _translatedController.text = "";
-                                      if(value.isEmpty) return;
-                                      final String toLang = value.first as String;
+                                      if (value.isEmpty) return;
+                                      final String toLang = value
+                                          .first as String;
                                       final translator = GoogleTranslator();
                                       final input = _extractText;
                                       String translatedText =
                                           (await translator.translate(input,
-                                                to: toLang))
+                                              to: toLang))
                                               .text;
                                       _translatedController.text =
                                           translatedText;
                                     },
-                                    // DropdownButton<String>(
-                                    //   value: dropdownValue,
-                                    //   isExpanded: true,
-                                    //   icon: Icon(
-                                    //     Icons.arrow_downward,
-                                    //   ),
-                                    //   iconSize: 24,
-                                    //   dropdownColor: Colors.white,
-                                    //   style: TextStyle(color: Colors.black),
-                                    //   underline: Container(
-                                    //     height: 2,
-                                    //     width: double.infinity,
-                                    //   ),
-                                    //   onChanged: (String? newValue) {
-                                    //     setState(() {
-                                    //       dropdownValue = newValue!;
-                                    //     });
-                                    //   },
-                                    //   items: <String>[
-                                    //     'One',
-                                    //     'Two',
-                                    //     'Free',
-                                    //     'Four'
-                                    //   ].map<DropdownMenuItem<String>>(
-                                    //       (String value) {
-                                    //     return DropdownMenuItem<String>(
-                                    //       value: value,
-                                    //       child: Text(value),
-                                    //     );
-                                    //   }).toList(),
-                                    // ),
+
                                   )))),
                     ),
                   ],
@@ -300,7 +275,7 @@ class _convertImageToState extends State<convertImageTo> {
                           focusedBorder: InputBorder.none,
                           enabledBorder: InputBorder.none,
                           suffixIcon: IconButton(
-                            onPressed: () => _speak(),
+                            onPressed: () => _speakMultipleLang(),
                             icon: Icon(
                               Icons.headset,
                               color: Colors.black,

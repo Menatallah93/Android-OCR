@@ -1,0 +1,20 @@
+No entry sign
+No left sign
+The maximum speed is30k/h
+No right sign
+The maximum speed is50k/h
+No stopping sign
+The maximum speed is 70k/h
+The maximum speed is 80k/h
+Mini-roundabout(roundabout circulation - give way to vehicles from the immediate left)
+No excessive noise sign
+The maximum speed is 100k/h
+stop sign warning
+Warning sign
+Go straight or right sign
+Keep right sign
+Go straight or left sign
+Keep left sign
+The maximum speed is 20k/h
+Uneven road sign
+No waiting sign

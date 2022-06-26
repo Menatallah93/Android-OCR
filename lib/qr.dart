@@ -8,7 +8,7 @@ import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';
 
 //import 'package:qr_code_scanner/qr_code_scanner.dart';
-
+import 'package:easy_localization/src/public_ext.dart';
 
 class convertQRTo extends StatefulWidget{
 
@@ -53,10 +53,6 @@ class _convertQRToState extends State<convertQRTo> {
           Text(widget.text ,
             style: TextStyle(color: Colors.black, fontSize: 25),),
           actions: [
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Icon(Icons.settings , color: Colors.black,),
-            ),
           ],
 
         ),
@@ -76,16 +72,8 @@ class _convertQRToState extends State<convertQRTo> {
                 SizedBox(
                   height: 10,
                 ),
-                /*ElevatedButton(
-                  onPressed: onPressed,
-                  child: Text(('Scan now')),
-                ),*/
-
-
-                SizedBox(
-                  height: 10,
-                ),
-                Align(alignment: Alignment.topLeft, child: Text('The Content' , style: TextStyle( fontSize: 23 , fontWeight: FontWeight.bold),)),
+                Align(/*alignment: Alignment.topLeft,*/
+                    child: Text('The Content'.tr() , style: TextStyle( fontSize: 23 , fontWeight: FontWeight.bold),)),
                 SizedBox(
                   height: 10,
                 ),
@@ -98,8 +86,6 @@ class _convertQRToState extends State<convertQRTo> {
 
                     for (Barcode barcode in barcodes) {
                       final BarcodeType type = barcode.type;
-
-
                       // See API reference for complete list of supported types
                       switch (type) {
                         case BarcodeType.wifi:
@@ -117,14 +103,8 @@ class _convertQRToState extends State<convertQRTo> {
                     }
                     print(_QrTextController.text);
 
-
-
-
-                   /*
-                    _extractText =
-                      await FlutterTesseractOcr.extractText(_pickedImage.path);*/
                   },
-                  child: Text('Get Qr code'),
+                  child: Text('Get Qr code'.tr()),
                 ),
 
                 Material(
@@ -136,9 +116,6 @@ class _convertQRToState extends State<convertQRTo> {
                     borderRadius: BorderRadius.circular(15.0),
 
                     child: Container(
-
-
-
                     // بدايه الانبوت
                       child: TextFormField(
                         controller: _QrTextController,
@@ -173,35 +150,7 @@ class _convertQRToState extends State<convertQRTo> {
                 SizedBox(
                   height: 10,
                 ),
-                /* Material(
-                  elevation:  3.0,
-                  shadowColor: Colors.grey,
 
-                  borderRadius: BorderRadius.circular(15),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(15.0),
-                    child: Container(
-
-                      child: TextFormField(
-                        maxLines: 4,
-                        onTap: () {
-                          print('g');
-
-                        },
-                        // textAlign: TextAlign.,
-                        cursorColor: Colors.black,
-                        showCursor: true,
-                        decoration: new InputDecoration(
-                          border: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          enabledBorder: InputBorder.none,
-                          suffixIcon:  Icon(Icons.headset , color: Colors.black,size: 30,),
-
-                        ),
-                      ),
-                    ),
-                  ),
-                ),*/
               ],
             ),
           ),
@@ -210,22 +159,4 @@ class _convertQRToState extends State<convertQRTo> {
       ),
     );
   }
-
- /* Widget buildResult()  => Text(
-    barcode != null ? 'Result : ${barcode!.code}': 'Scan the Code',
-    maxLines: 3,
-  );
-
-
-  Widget buildQrView(BuildContext context) => QRView(
-    key: qrKey,
-    onQRViewCreated: onQRViewCreated,
-  );
-
-  void onQRViewCreated(QRViewController controller){
-    setState(() => this.controller = controller);
-    controller.scannedDataStream
-        .listen((barcode) => setState(() => this.barcode = barcode));
-  }*/
-
 }

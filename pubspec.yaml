@@ -34,39 +34,40 @@ dependencies:
   flutter:
     sdk: flutter
 
-  #qr_code_scanner: ^0.6.1
-  #flutter_barcode_scanner: ^2.0.0
-
   carousel_slider: ^4.0.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
+
   cupertino_icons: ^1.0.2
   camera_camera: ^2.0.2
-  image_cropper: ^1.4.1
   image_picker: ^0.8.2
-  #flutter_firebase_ml_vision: ^0.0.1
-  #flutter_tesseract_ocr: ^0.4.19
-
-
-  flutter_tesseract_ocr: ^0.4.19
-  flutter_tts: ^3.3.3
-  google_ml_kit: ^0.7.3
-  translator: ^0.1.7
-
 
   path_provider: ^2.0.2
   path: ^1.8.0
   multi_select_flutter:
   localstore: ^1.2.1
   file_picker: ^4.2.8
-  settings_ui: ^2.0.2
-
   device_preview: ^1.0.0
 
 
+  settings_ui: ^2.0.2
+  easy_localization: ^3.0.0
+  google_ml_kit: ^0.7.3
+  flutter_tts: ^3.3.3
+  translator: ^0.1.7
+  math_expressions: ^2.3.0
 
-  flutter_file_manager: ^0.2.0
+  #flutter_file_manager: ^0.2.0
+  tflite: ^1.1.2
+
+  flutter_cached_pdfview: ^0.4.1
+  syncfusion_flutter_pdfviewer: ^20.1.56-beta
+  substring_highlight: ^1.0.33
+  url_launcher: ^6.1.2
+
+  easy_rich_text: 1.0.3
+  image: any
 
 dev_dependencies:
   flutter_test:
@@ -101,6 +102,15 @@ flutter:
     - assets/images/
     - assets/tessdata/
     - assets/
+    - assets/translations/
+    - assets/sample.pdf
+
+    - assets/yourmodel.tflite
+    - assets/labels.txt
+
+
+
+
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
